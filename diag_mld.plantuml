@@ -1,0 +1,51 @@
+@startuml
+
+!define ENTITY class
+!define ENTITY_EXT << (E, #FFAAAA) >>
+!define RELATION -[hidden]->
+
+package "Tables" {
+    ENTITY Utilisateur {
+        + Nom: String (PK)
+        AdresseMail: String (unique)
+        MotDePasse: String
+        Admin: Boolean
+        Avatar: String
+    }
+
+    ENTITY Scene {
+        + Nom: String (PK)
+        Equipe: String
+        Description: String
+        DateAjout: Date
+        SceneTexte: String
+        ImageLink: String
+        VignetteLink: String
+        ExecutableLink: String
+    }
+
+    ENTITY Commentaire {
+        + Titre: String (PK)
+        Texte: String
+        DateCreation: Date
+        DateModification: Date
+    }
+
+    ENTITY Note {
+        + Valeur: Int (PK)
+    }
+
+    ENTITY ListeDesFavoris {
+        + UtilisateurNom: String (PK, FK references Utilisateur(Nom))
+        + SceneNom: String (PK, FK references Scene(Nom))
+    }
+}
+
+Utilisateur -- ListeDesFavoris : "Constitue"
+Scene -- ListeDesFavoris : "Constitue"
+Scene *-- "*" Note : "Possède"
+Utilisateur *-- "*" Note  : "Possède"
+Utilisateur "0,*" -- "1" Commentaire : "Publie"
+Scene "0,*" -- "1" Commentaire : "Donne"
+
+@enduml

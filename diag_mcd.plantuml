@@ -1,0 +1,46 @@
+@startuml
+
+!define ENTITY class
+!define ENTITY_EXT << (E, #FFAAAA) >>
+!define RELATION -[hidden]->
+
+entity Scene{
+    + nom: String
+    + equipe: String
+    + description: String
+    + dateAjout : date
+    + scene: String
+    + lienImage: String
+    + lienVignette: String
+    + lienExecutable: String
+}
+
+entity Utilisateur{
+    + nom: String
+    + adresseMail: String
+    + motDePasse: String
+    + admin: boolean
+    + avatar: String
+}
+
+entity Commentaire{
+    + titre: String
+    + texte: String
+    + dateCreation: date
+    + dateLModification: date
+}
+
+entity Note{
+    + valeur: int
+}
+
+entity ListeDesFavoris{
+}
+
+(Scene, Utilisateur) -- ListeDesFavoris
+(Scene, Utilisateur) .. Note
+Scene "1" -- "0,*" Utilisateur : < Ajoute
+Utilisateur "0,*" -- "1" Commentaire : > Publie
+Scene "0,*" -- "1" Commentaire : > Donne
+
+@enduml
